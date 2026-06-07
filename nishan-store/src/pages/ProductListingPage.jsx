@@ -22,7 +22,7 @@ function ProductListingPage() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   useEffect(() => {
     getCategories().then(setCategories).catch(() => {})
@@ -129,18 +129,17 @@ function ProductListingPage() {
   const filters = { category, minPrice, maxPrice, brands: selectedBrands }
 
   return (
-    <div className="h-auto min-h-screen bg-[#f0f2f5] py-6">
+    <div className="min-h-screen bg-[#f0f2f5] py-6">
       {/* Centered card container */}
-      <div className=" mx-auto px-6">
-        <div className="bg-white shadow-sm overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           {/* Navbar inside the card */}
           <Navbar />
 
-          {/* Main content area */}
-          <main className="p-6">
-            {/* Mobile filter toggle */}
+          <main className="px-4 py-5">
+            {/* Filter toggle */}
             <button
-              className="md:hidden mb-4 flex items-center gap-2 px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className="mb-4 flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
               onClick={() => setSidebarOpen(prev => !prev)}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,18 +148,20 @@ function ProductListingPage() {
               {sidebarOpen ? 'Hide Filters' : 'Show Filters'}
             </button>
 
-            <div className="flex gap-8 items-start">
-              {/* Sidebar — always visible on md+, toggled on mobile */}
-              <div className={`${sidebarOpen ? 'block' : 'hidden'} md:block w-[220px] flex-shrink-0`}>
-                <FilterSidebar
-                  categories={categories}
-                  brands={availableBrands}
-                  filters={filters}
-                  onCategoryChange={handleCategoryChange}
-                  onPriceApply={handlePriceApply}
-                  onBrandToggle={handleBrandToggle}
-                />
-              </div>
+            <div className="flex gap-5 items-start">
+              {/* Sidebar — toggled by the filter button above */}
+              {sidebarOpen && (
+                <div className="w-56 flex-shrink-0">
+                  <FilterSidebar
+                    categories={categories}
+                    brands={availableBrands}
+                    filters={filters}
+                    onCategoryChange={handleCategoryChange}
+                    onPriceApply={handlePriceApply}
+                    onBrandToggle={handleBrandToggle}
+                  />
+                </div>
+              )}
 
               <div className="flex-1 min-w-0">
                 {/* Filters Header */}
@@ -186,12 +187,12 @@ function ProductListingPage() {
                 {loading && (
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                     {Array.from({ length: PRODUCTS_PER_PAGE }).map((_, i) => (
-                      <div key={i} className="bg-white rounded-lg p-3 animate-pulse border border-gray-100">
-                        <div className="h-32 bg-gray-50 rounded mb-3" />
-                        <div className="space-y-2">
-                          <div className="h-4 bg-gray-100 rounded w-full" />
-                          <div className="h-4 bg-gray-100 rounded w-1/2" />
-                          <div className="h-3 bg-gray-100 rounded w-2/3" />
+                      <div key={i} className="bg-white rounded-lg border border-gray-200 overflow-hidden animate-pulse">
+                        <div className="h-44 bg-gray-200" />
+                        <div className="p-3 space-y-2 border-t border-gray-100">
+                          <div className="h-3.5 bg-gray-200 rounded w-full" />
+                          <div className="h-3.5 bg-gray-200 rounded w-3/4" />
+                          <div className="h-3.5 bg-gray-200 rounded w-1/2" />
                         </div>
                       </div>
                     ))}
