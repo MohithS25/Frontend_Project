@@ -1,7 +1,11 @@
-function Navbar() {
+function Navbar({ onMenuClick }) {
   return (
     <header className="bg-gray-900 text-white px-4 py-3 flex items-center gap-3 sticky top-0 z-10 shadow-md">
-      <button className="text-white p-1 rounded hover:bg-gray-700 transition-colors flex-shrink-0">
+      <button
+        onClick={onMenuClick}
+        className="text-white p-1 rounded hover:bg-gray-700 transition-colors flex-shrink-0"
+        aria-label="Toggle filters"
+      >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
