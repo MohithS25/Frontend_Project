@@ -11,8 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
-Frontend Engineering Assessment.pdf
-.claude
+Frontend Engineering Assessment.pdf/
+.claude/
 
 
 # Editor directories and files

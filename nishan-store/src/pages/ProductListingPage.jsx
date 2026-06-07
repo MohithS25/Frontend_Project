@@ -22,7 +22,7 @@ function ProductListingPage() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   useEffect(() => {
     getCategories().then(setCategories).catch(() => {})
@@ -133,9 +133,9 @@ function ProductListingPage() {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 py-5">
-        {/* Mobile filter toggle */}
+        {/* Filter toggle */}
         <button
-          className="md:hidden mb-4 flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="mb-4 flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
           onClick={() => setSidebarOpen(prev => !prev)}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,8 +145,9 @@ function ProductListingPage() {
         </button>
 
         <div className="flex gap-5 items-start">
-          {/* Sidebar — always visible on md+, toggled on mobile */}
-          <div className={`${sidebarOpen ? 'block' : 'hidden'} md:block w-56 flex-shrink-0`}>
+          {/* Sidebar — toggled by the filter button above */}
+          {sidebarOpen && (
+          <div className="w-56 flex-shrink-0">
             <FilterSidebar
               categories={categories}
               brands={availableBrands}
@@ -156,6 +157,7 @@ function ProductListingPage() {
               onBrandToggle={handleBrandToggle}
             />
           </div>
+          )}
 
           <div className="flex-1 min-w-0">
             <ActiveFilters
