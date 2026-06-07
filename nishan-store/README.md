@@ -1,6 +1,9 @@
-# Nishan Store — Leegality Frontend Assessment
+# Nishan — Leegality Frontend Assessment
 
 An Amazon-style product listing and detail app built with React, using the [DummyJSON](https://dummyjson.com/docs/products) public API.
+
+## Deployment Link - Vercel
+https://leegality-frontend-assessment.vercel.app/
 
 ## Setup Instructions
 
@@ -20,11 +23,14 @@ npm run build
 
 ## Features
 
-- **Product Listing Page** — responsive grid with skeleton loading
+- **Product Listing Page** — responsive grid with skeleton loading, centered card layout
 - **Filters** — category (API-driven), price range, brand (multi-select), all combinable
+- **Show/Hide Filters toggle** — collapse the filter sidebar to give the product grid more room
+- **Active filter chips** — see and remove applied filters individually, or clear all at once
 - **Filter persistence** — filters are stored in the URL, so navigating back from a product page preserves the exact filter state
-- **Product Detail Page** — image gallery, full product info, reviews
-- **Pagination** — client-side after filtering
+- **Product Detail Page** — image gallery with thumbnails, full product info, reviews
+- **Pagination** — client-side after filtering, resets to page 1 whenever filters change
+- **Loading & error states** — skeleton placeholders while fetching, retry UI on failure
 
 ## Assumptions
 
@@ -41,19 +47,21 @@ Filters are stored in URL search params (`?category=smartphones&brand=Apple&page
 ### Client-side filtering after one API call
 When a category is selected, all products in that category are fetched once (`limit=200`). Price and brand filters are then applied in-memory. This avoids multiple API round-trips on each filter interaction and keeps the UX snappy.
 
+### Collapsible filter sidebar
+The sidebar is shown by default (filters are the primary navigation tool on a listing page) but can be toggled off via a "Hide/Show Filters" button so the product grid can use the full width — useful on narrower screens or when a user just wants to browse.
+
 ### Component structure
 ```
 src/
 ├── pages/
-│   ├── ProductListingPage.jsx   # filter state, fetch logic, layout
-│   └── ProductDetailPage.jsx    # single product fetch, image gallery
+│   ├── ProductListingPage.jsx   # filter state, fetch logic, layout, sidebar toggle
+│   └── ProductDetailPage.jsx    # single product fetch, image gallery, reviews
 ├── components/
-│   ├── Navbar.jsx
-│   ├── ProductCard.jsx
+│   ├── Navbar.jsx               # search bar + cart/account icons
+│   ├── ProductCard.jsx          # image, title, price, star rating
 │   ├── FilterSidebar.jsx        # categories, price range, brands
-│   ├── ActiveFilters.jsx        # chips showing applied filters
-│   ├── Pagination.jsx
-│   └── StarRating.jsx
+│   ├── ActiveFilters.jsx        # chips showing applied filters, removable
+│   └── Pagination.jsx
 └── services/
     └── api.js                   # all fetch calls in one place
 ```
@@ -65,4 +73,4 @@ src/
 - **Persistent cart** — add to cart via localStorage, show count in navbar
 - **Image zoom** on product detail page
 - **Unit tests** — test filter logic with Vitest + React Testing Library
-- **Deploy** — host on Vercel or Netlify for a live demo link
+
