@@ -130,12 +130,23 @@ function ProductListingPage() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar onMenuClick={() => setSidebarOpen(prev => !prev)} />
+      <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 py-5">
+        {/* Mobile filter toggle */}
+        <button
+          className="md:hidden mb-4 flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
+          onClick={() => setSidebarOpen(prev => !prev)}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
+          </svg>
+          {sidebarOpen ? 'Hide Filters' : 'Show Filters'}
+        </button>
+
         <div className="flex gap-5 items-start">
-          {/* Sidebar — toggled by the navbar hamburger on all screen sizes */}
-          <div className={`${sidebarOpen ? 'block' : 'hidden'} w-56 flex-shrink-0`}>
+          {/* Sidebar — always visible on md+, toggled on mobile */}
+          <div className={`${sidebarOpen ? 'block' : 'hidden'} md:block w-56 flex-shrink-0`}>
             <FilterSidebar
               categories={categories}
               brands={availableBrands}
