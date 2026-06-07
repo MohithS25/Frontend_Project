@@ -7,7 +7,7 @@ import Pagination from '../components/Pagination'
 import FilterSidebar from '../components/FilterSidebar'
 import ActiveFilters from '../components/ActiveFilters'
 
-const PRODUCTS_PER_PAGE = 12
+const PRODUCTS_PER_PAGE = 8
 
 function ProductListingPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -129,108 +129,123 @@ function ProductListingPage() {
   const filters = { category, minPrice, maxPrice, brands: selectedBrands }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
+    <div className="h-auto min-h-screen bg-[#f0f2f5] py-6">
+      {/* Centered card container */}
+      <div className=" mx-auto px-6">
+        <div className="bg-white shadow-sm overflow-hidden">
+          {/* Navbar inside the card */}
+          <Navbar />
 
-      <main className="max-w-7xl mx-auto px-4 py-5">
-        {/* Mobile filter toggle */}
-        <button
-          className="md:hidden mb-4 flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
-          onClick={() => setSidebarOpen(prev => !prev)}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
-          </svg>
-          {sidebarOpen ? 'Hide Filters' : 'Show Filters'}
-        </button>
+          {/* Main content area */}
+          <main className="p-6">
+            {/* Mobile filter toggle */}
+            <button
+              className="md:hidden mb-4 flex items-center gap-2 px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              onClick={() => setSidebarOpen(prev => !prev)}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
+              </svg>
+              {sidebarOpen ? 'Hide Filters' : 'Show Filters'}
+            </button>
 
-        <div className="flex gap-5 items-start">
-          {/* Sidebar — always visible on md+, toggled on mobile */}
-          <div className={`${sidebarOpen ? 'block' : 'hidden'} md:block w-56 flex-shrink-0`}>
-            <FilterSidebar
-              categories={categories}
-              brands={availableBrands}
-              filters={filters}
-              onCategoryChange={handleCategoryChange}
-              onPriceApply={handlePriceApply}
-              onBrandToggle={handleBrandToggle}
-            />
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <ActiveFilters
-              category={category}
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-              brands={selectedBrands}
-              categories={categories}
-              onClearCategory={() => handleCategoryChange(null)}
-              onClearPrice={handleClearPrice}
-              onClearBrand={handleClearBrand}
-              onClearAll={handleClearAll}
-            />
-
-            {loading && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {Array.from({ length: PRODUCTS_PER_PAGE }).map((_, i) => (
-                  <div key={i} className="bg-white rounded-lg border border-gray-200 overflow-hidden animate-pulse">
-                    <div className="h-44 bg-gray-200" />
-                    <div className="p-3 space-y-2 border-t border-gray-100">
-                      <div className="h-3.5 bg-gray-200 rounded w-full" />
-                      <div className="h-3.5 bg-gray-200 rounded w-3/4" />
-                      <div className="h-3.5 bg-gray-200 rounded w-1/2" />
-                    </div>
-                  </div>
-                ))}
+            <div className="flex gap-8 items-start">
+              {/* Sidebar — always visible on md+, toggled on mobile */}
+              <div className={`${sidebarOpen ? 'block' : 'hidden'} md:block w-[220px] flex-shrink-0`}>
+                <FilterSidebar
+                  categories={categories}
+                  brands={availableBrands}
+                  filters={filters}
+                  onCategoryChange={handleCategoryChange}
+                  onPriceApply={handlePriceApply}
+                  onBrandToggle={handleBrandToggle}
+                />
               </div>
-            )}
 
-            {error && (
-              <div className="text-center py-20">
-                <p className="text-red-500 text-lg mb-2">Something went wrong</p>
-                <p className="text-sm text-gray-400 mb-4">{error}</p>
-                <button
-                  onClick={() => handleCategoryChange(category)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                  Retry
-                </button>
-              </div>
-            )}
+              <div className="flex-1 min-w-0">
+                {/* Filters Header */}
+                <div className="flex items-center gap-2 mb-4">
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <h2 className="text-base font-semibold text-gray-800">Filters</h2>
+                </div>
 
-            {!loading && !error && (
-              <>
-                <p className="text-sm text-gray-500 mb-4">{filteredProducts.length} products found</p>
+                <ActiveFilters
+                  category={category}
+                  minPrice={minPrice}
+                  maxPrice={maxPrice}
+                  brands={selectedBrands}
+                  categories={categories}
+                  onClearCategory={() => handleCategoryChange(null)}
+                  onClearPrice={handleClearPrice}
+                  onClearBrand={handleClearBrand}
+                  onClearAll={handleClearAll}
+                />
 
-                {paginatedProducts.length === 0 ? (
-                  <div className="text-center py-20">
-                    <p className="text-gray-400 text-lg mb-2">No products found</p>
-                    <p className="text-sm text-gray-400 mb-4">Try adjusting or clearing your filters.</p>
-                    <button
-                      onClick={handleClearAll}
-                      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-                    >
-                      Clear all filters
-                    </button>
-                  </div>
-                ) : (
+                {loading && (
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {paginatedProducts.map(product => (
-                      <ProductCard key={product.id} product={product} />
+                    {Array.from({ length: PRODUCTS_PER_PAGE }).map((_, i) => (
+                      <div key={i} className="bg-white rounded-lg p-3 animate-pulse border border-gray-100">
+                        <div className="h-32 bg-gray-50 rounded mb-3" />
+                        <div className="space-y-2">
+                          <div className="h-4 bg-gray-100 rounded w-full" />
+                          <div className="h-4 bg-gray-100 rounded w-1/2" />
+                          <div className="h-3 bg-gray-100 rounded w-2/3" />
+                        </div>
+                      </div>
                     ))}
                   </div>
                 )}
 
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
-              </>
-            )}
-          </div>
+                {error && (
+                  <div className="text-center py-20">
+                    <p className="text-red-500 text-lg mb-2">Something went wrong</p>
+                    <p className="text-sm text-gray-400 mb-4">{error}</p>
+                    <button
+                      onClick={() => handleCategoryChange(category)}
+                      className="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                )}
+
+                {!loading && !error && (
+                  <>
+                    <p className="text-sm text-gray-500 mb-5">{filteredProducts.length} products found</p>
+
+                    {paginatedProducts.length === 0 ? (
+                      <div className="text-center py-20">
+                        <p className="text-gray-400 text-lg mb-2">No products found</p>
+                        <p className="text-sm text-gray-400 mb-4">Try adjusting or clearing your filters.</p>
+                        <button
+                          onClick={handleClearAll}
+                          className="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm shadow-sm"
+                        >
+                          Clear all filters
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {paginatedProducts.map(product => (
+                          <ProductCard key={product.id} product={product} />
+                        ))}
+                      </div>
+                    )}
+
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
+                  </>
+                )}
+              </div>
+            </div>
+          </main>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

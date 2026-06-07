@@ -14,51 +14,64 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
   const visiblePages = getVisiblePages()
 
   return (
-    <div className="flex items-center justify-center gap-1 py-6">
+    <div className="flex items-center justify-center gap-2 mt-8 pt-4">
+      {/* Previous button */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-1.5 rounded border text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
+        className="px-4 py-2 rounded-[8px] bg-white border border-gray-200 text-sm text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-gray-300 transition-all"
       >
         ← Previous
       </button>
 
+      {/* First page + ellipsis if needed */}
       {visiblePages[0] > 1 && (
         <>
-          <button onClick={() => onPageChange(1)} className="px-3 py-1.5 rounded border text-sm hover:bg-gray-100">1</button>
+          <button
+            onClick={() => onPageChange(1)}
+            className="w-10 h-10 rounded-[8px] bg-white border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all"
+          >
+            1
+          </button>
           {visiblePages[0] > 2 && <span className="px-1 text-gray-400">…</span>}
         </>
       )}
 
+      {/* Page number buttons */}
       {visiblePages.map((page) => (
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`px-3 py-1.5 rounded border text-sm transition-colors ${
+          className={`w-10 h-10 rounded-[8px] text-sm font-medium transition-all ${
             page === currentPage
-              ? 'bg-blue-600 text-white border-blue-600'
-              : 'hover:bg-gray-100'
+              ? 'bg-[#2563eb] text-white border border-[#2563eb]'
+              : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300'
           }`}
         >
           {page}
         </button>
       ))}
 
+      {/* Last page + ellipsis if needed */}
       {visiblePages[visiblePages.length - 1] < totalPages && (
         <>
           {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
             <span className="px-1 text-gray-400">…</span>
           )}
-          <button onClick={() => onPageChange(totalPages)} className="px-3 py-1.5 rounded border text-sm hover:bg-gray-100">
+          <button
+            onClick={() => onPageChange(totalPages)}
+            className="w-10 h-10 rounded-[8px] bg-white border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all"
+          >
             {totalPages}
           </button>
         </>
       )}
 
+      {/* Next button */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-1.5 rounded border text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
+        className="px-4 py-2 rounded-[8px] bg-white border border-gray-200 text-sm text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-gray-300 transition-all"
       >
         Next →
       </button>
